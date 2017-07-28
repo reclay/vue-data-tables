@@ -83,7 +83,7 @@
         @current-change='handleCurrentChange',
         :current-page='currentPage',
         :page-sizes='innerPaginationDef.pageSizes',
-        :page-size='internalPageSize',
+        :page-size='innerPageSize',
         :layout='innerPaginationDef.layout',
         :total='total')
 </template>
@@ -180,7 +180,7 @@ export default {
     return {
       sortData: {},
       currentPage: 1,
-      internalPageSize: 20,
+      innerPageSize: 20,
       searchKey: '',
       innerSearchKey: '',
       checkedFilters: [],
@@ -226,12 +226,23 @@ export default {
       }, this.searchDef)
     },
     innerPaginationDef() {
-      return Object.assign({
+      let paginationDef = Object.assign({
         layout: 'prev, pager, next, jumper, sizes, total',
         pageSize: 20,
         pageSizes: [20, 50, 100],
         currentPage: 1
       }, this.paginationDef)
+
+      if (paginationDef.show === false) {
+        paginationDef.pageSize = this.data.length
+      } else {
+        if (paginationDef.pageSizes.indexOf(paginationDef.pageSize) === -1) {
+          console.warn(`pageSize ${paginationDef.pageSize} is not in pageSizes[${paginationDef.pageSizes}], use the first one(${paginationDef.pageSizes[0]}) in pageSizes`)
+          paginationDef.pageSize = paginationDef.pageSizes[0]
+        }
+      }
+
+      return paginationDef
     },
     innerActionColDef() {
       return Object.assign({
@@ -333,8 +344,8 @@ export default {
       return filteredData
     },
     curTableData() {
-      let from = this.internalPageSize * (this.currentPage - 1)
-      let to = from + this.internalPageSize
+      let from = this.innerPageSize * (this.currentPage - 1)
+      let to = from + this.innerPageSize
       return this.tableData.slice(from, to)
     },
     total() {
@@ -389,7 +400,7 @@ export default {
       }
     },
     handleSizeChange(size) {
-      this.internalPageSize = size
+      this.innerPageSize = size
       this.$emit('size-change', size)
     },
     handleCurrentChange(currentPage) {
@@ -404,7 +415,7 @@ export default {
     innerPaginationDef: {
       immediate: true,
       handler(val) {
-        this.internalPageSize = val.pageSize
+        this.innerPageSize = val.pageSize
         this.currentPage = val.currentPage
       }
     },
