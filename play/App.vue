@@ -1,7 +1,7 @@
 <style lang='scss'>
   body {
     margin: 0;
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   }
 
   .app-wrapper {
@@ -11,53 +11,42 @@
     bottom: 0;
     left: 0;
   }
+
+  $li-width: 20px;
+  .el-custom-pagination{
+    list-style: none;
+    ul{
+      padding: 0;
+    }
+    li{
+      display: inline-block;
+      width: $li-width;
+      height: $li-width;
+      background-color: red;
+      border-radius: $li-width / 2;
+      cursor: pointer;
+      margin-left: 10px;
+      &.active{
+        background-color: black;
+      }
+    }
+  }
 </style>
 
 <template lang="pug">
   .app-wrapper
     data-tables(
-      :data='tableData',
-      :show-action-bar='false',
-      :actions-def='actionsDef',
-      :checkbox-filter-def='checkFilterDef',
-      :search-def='searchDef',
-      :action-col-def='actionColDef',
-      :custom-filters='customFilters',
-      :tableProps='tableProps',
-      :pagination-def='paginationDef',
-      @selection-change='handleSelectChange'
-      @row-click='handleRowClick')
+    :data='tableData',
+    :tableProps='tableProps',
+    :pagination-def='paginationDef',
+    @selection-change='handleSelectChange'
+      @row-click='handleRowClick'
+        @sort-change='sortM')
 
-      el-row(slot='custom-tool-bar')
-        el-col(:span='5')
-          el-dropdown
-            el-button(type='primary')
-              | 更多菜单
-              i.el-icon-caret-bottom.el-icon--right
-            el-dropdown-menu(slot='dropdown')
-              el-dropdown-item 黄金糕
-              el-dropdown-item 狮子头
-              el-dropdown-item 螺蛳粉
-              el-dropdown-item 双皮奶
-              el-dropdown-item 蚵仔煎
+      el-table-column(prop='date', label='date.', sortable='custom')
+      el-table-column(prop='name', label='name.', sortable='custom')
+      el-table-column(prop='num', label='num.', sortable='custom')
 
-        el-col(:span='14')
-          el-input(class='test', v-model='customFilters[0].vals', @change='change()')
-        el-col(:span='5')
-          el-select(v-model='customFilters[1].vals', multiple)
-            el-option(label='维修', value='repair')
-            el-option(label='帮忙', value='help')
-
-      el-table-column(type='selection' width='55')
-      el-table-column(prop='flow_no', label='No.', sortable='custom')
-      el-table-column(prop='content', label='Content', sortable='custom')
-      el-table-column(prop='create_time', label='Time', sortable='custom')
-      el-table-column(prop='state', label='State', sortable='custom')
-      el-table-column(prop='flow_type', label='Type', sortable='custom')
-      el-table-column(prop='building_group', label='Building group', sortable='custom')
-      el-table-column(prop='building', label='building', sortable='custom')
-      el-table-column(prop='room_no', label='no', sortable='custom')
-      el-table-column(prop='cellphone', label='tel', sortable='custom')
     //- div {{selection}}
 </template>
 
@@ -68,15 +57,62 @@
     components: {DataTables},
     data() {
       return {
-        tableData: [],
+        tableData: [
+          {
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+            url: 'https://jsfiddle.net/api/post/library/pure//jsfiddle.net/api/post/library/pure',
+            num: 100
+          }, {
+            date: '2016-05-04',
+            name: '毛小虎',
+            address: '上海市普陀区金沙江路 1517 弄',
+            url: 'http://www.dltv.cn/vod/ds/ggpd/fzxtd/1471002888976.shtml?t=2016-8-12&id=14690',
+            num: 37
+          }, {
+            date: '2016-05-01',
+            name: '非小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+            url: '',
+            num: 150
+          }, {
+            date: '2016-05-03',
+            name: '张小虎',
+            address: '上海市普陀区金沙江路 1516 弄',
+            url: '',
+            num: 300
+          }, {
+            date: '2016-05-02',
+            name: '狗小虎',
+            address: '上海市普陀区金沙江路 1518 弄',
+            url: 'https://jsfiddle.net/api/post/library/pure//jsfiddle.net/api/post/library/pure',
+            num: 100
+          },
+          {
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1517 弄',
+            url: 'http://www.dltv.cn/vod/ds/ggpd/fzxtd/1471002888976.shtml?t=2016-8-12&id=14690',
+            num: 137
+          }, {
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄',
+            url: '',
+            num: 150
+          }, {
+            date: '2016-05-03',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1516 弄',
+            url: '',
+            num: 300
+          }
+        ],
         tableProps: {
           rowClassName: 'test-class',
           border: false,
-          stripe: false,
-          defaultSort: {
-            prop: 'flow_no',
-            order: 'descending'
-          }
+          stripe: false
         },
         customFilters: [{
           vals: ''
@@ -145,57 +181,14 @@
           }]
         },
         paginationDef: {
-          layout: 'prev, pager, next, jumper, sizes, total'
+          layout: 'prev, pager, next, jumper, sizes, total',
+          pageSize: 3,
+          pageSizes: [3, 5]
         }
       }
     },
     created() {
       console.log('created')
-      for (var i = 0; i < 100; i++) {
-        this.tableData = this.tableData.concat([{
-          'building': '5',
-          'building_group': 'North',
-          'cellphone': '13400000000',
-          'content': 'Water flood',
-          'create_time': '2016-10-01 22:25',
-          'flow_no': 'FW201601010001',
-          'flow_type': 'Repair',
-          'flow_type_code': 'repair',
-          'id': '111111',
-          'room_id': '00501',
-          'room_no': '501',
-          'state': 'Created',
-          'state_code': 'created'
-        }, {
-          'building': '6',
-          'building_group': 'Sourth',
-          'cellphone': '13400000000',
-          'content': 'Lock broken',
-          'create_time': '2016-10-01 22:25',
-          'flow_no': 'FW201601010002',
-          'flow_type': 'Repair',
-          'flow_type_code': 'repair',
-          'id': '2222222',
-          'room_id': '00701',
-          'room_no': '701',
-          'state': 'Assigned',
-          'state_code': 'assigned'
-        }, {
-          'building': '9',
-          'building_group': 'North',
-          'cellphone': '13400000000',
-          'content': 'Help to buy some drinks',
-          'create_time': '2016-10-02 22:25',
-          'flow_no': 'FW201601010003',
-          'flow_type': 'Help',
-          'flow_type_code': 'help',
-          'id': '2222222',
-          'room_id': '00601',
-          'room_no': '601',
-          'state': 'Closed',
-          'state_code': 'closed'
-        }])
-      }
     },
     methods: {
       change(val) {
@@ -206,6 +199,22 @@
       },
       handleRowClick() {
         console.log('clicked')
+      },
+      sortM(sortData) {
+        if (sortData.order) {
+          let order = sortData.order
+          let prop = sortData.prop
+          let isDescending = order === 'descending'
+
+          this.tableData.sort(function (a, b) {
+            let flag = a[prop] - b[prop]
+            if (Number.isNaN(flag)) return a[prop] && b[prop] && (a[prop] + '').localeCompare(b[prop], 'cn')
+            return flag
+          })
+          if (isDescending) {
+            this.tableData.reverse()
+          }
+        }
       }
     }
   }
