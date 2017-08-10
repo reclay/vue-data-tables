@@ -1,0 +1,65 @@
+@charset "UTF-8";
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .left {
+    div {
+      display: inline-block;
+    }
+
+    .detail-info span:last-child{
+      margin: 0 8px;
+      display: inline-block;
+    }
+
+    .el-select {
+      width: 92px;
+    }
+  }
+
+  .right {
+    div {
+      display: inline-block;
+    }
+
+    .page-index {
+      margin-right: 8px;
+      color: #13ce66; //todo:主题色变量
+
+      span:last-child {
+        color: #636f79;
+      }
+    }
+
+    .page-btn .el-button{
+      margin-left: 8px;
+      padding: 8px;
+    }
+
+    .jumper {
+      margin-left: 24px;
+
+      .el-button{
+        padding: 8px 4px;
+      }
+    }
+  }
+
+  .el-input-number {
+    width: 35px;
+    vertical-align: middle;
+    margin: 0 8px ;
+
+    .el-input input {
+      width: 35px;
+      padding-right: 0;
+    }
+
+    .el-input-number__decrease, .el-input-number__increase {
+      display: none;
+    }
+  }
+}

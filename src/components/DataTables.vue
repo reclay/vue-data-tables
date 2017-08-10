@@ -78,7 +78,7 @@
                 @click='action.handler(scope.row)') {{action.name}}
 
     .pagination-wrap(v-if='paginationShow')
-      el-pagination(
+      pagination(
         @size-change='handleSizeChange',
         @current-change='handleCurrentChange',
         :current-page='currentPage',
@@ -92,13 +92,15 @@
 import CheckboxGroup from 'components/ScCheckboxGroup'
 import ErrorTips from 'components/ErrorTips.js'
 import debounce from 'javascript-debounce'
+import pagination from './pagination.vue'
 
 let allProps = []
 
 export default {
   name: 'DataTables',
   components: {
-    CheckboxGroup
+    CheckboxGroup,
+    pagination
   },
   props: {
     data: {
