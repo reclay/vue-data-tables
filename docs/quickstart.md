@@ -32,7 +32,9 @@ check [element-ui doc](http://element.eleme.io/#/en-US/component/i18n) for more 
 ```html
 /*vue*/
 <desc>
-  play and enjoy!
+  * click button `new` to add `row` to the table. 
+  * click button `Edit` to edit the row
+  * try to filter the table by checkbox filter and searchbox
 </desc>
 <template>
   <data-tables :data='data'
@@ -59,7 +61,7 @@ export default {
           def: [{
             name: 'new',
             handler: () => {
-              this.tableData.push({
+              this.data.push({
                 'content': 'hello world',
                 'flow_no': 'FW201601010004',
                 'flow_type': 'Help',
@@ -78,7 +80,7 @@ export default {
           }]
         },
         checkFilterDef: {
-          props: 'flow_type',
+          props: 'flow_type_code',
           def: [{
             'code': 'repair',
             'name': 'Repair'
@@ -88,11 +90,11 @@ export default {
           }]
        },
        actionColDef: {
-       		label: 'Actions',
+           label: 'Actions',
           def: [{
             handler: row => {
               this.$message('Edit clicked')
-							row.flow_no = "hello word"
+              row.flow_no = "hello word"
             },
             name: 'Edit'
           }, {
