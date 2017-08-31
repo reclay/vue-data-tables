@@ -78,7 +78,7 @@
                 @click='action.handler(scope.row)') {{action.name}}
 
     .pagination-wrap(v-if='paginationShow')
-      el-pagination(
+      gs-pagination(
         @size-change='handleSizeChange',
         @current-change='handleCurrentChange',
         :current-page='currentPage',
