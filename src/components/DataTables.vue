@@ -59,6 +59,7 @@
         let sortedData = this.data.slice()
 
         if (this.sortData.order) {
+          if (this.sortData.column.sortable === 'custom' && this._events && this._events['sort-change']) return sortedData
           let order = this.sortData.order
           let prop = this.sortData.prop
           let isDescending = order === 'descending'

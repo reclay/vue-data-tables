@@ -53,7 +53,7 @@ mixin template()
                 | {{action.name}}
 
     .pagination-wrap(v-if='paginationShow')
-      el-pagination(
+      gs-pagination(
         @size-change='handleSizeChange',
         @current-change='handlePageChange',
         :current-page='currentPage',
